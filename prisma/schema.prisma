@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  COMPANY
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  student   StudentProfile?
+  company   CompanyProfile?
+}
+
+model StudentProfile {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id])
+  resumeUrl String?
+  phone     String?
+  location  String?
+  education String?
+  skills    String[] @default([])
+  bio       String?
+  linkedin  String?
+  github    String?
+  website   String?
+  experience String?
+  profileImageUrl String?
+  applications Application[]
+}
+
+model CompanyProfile {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id])
+  name      String
+  website   String?
+  jobs      Job[]
+}
+
+model Job {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  location    String?
+  companyId   Int
+  company     CompanyProfile @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+  applications Application[]
+}
+
+model Application {
+  id         Int      @id @default(autoincrement())
+  jobId      Int
+  studentId  Int
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  job        Job            @relation(fields: [jobId], references: [id])
+  student    StudentProfile @relation(fields: [studentId], references: [id])
+}

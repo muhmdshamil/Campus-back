@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Prisma
+prisma/.env
+prisma/dev.db
+
+# VSCode
+.vscode/
+
+# Others
+*.tgz
+.idea/
+
+# Ignore generated Prisma client (if not checked in)
+/src/generated/
+/dist/generated/
